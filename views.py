@@ -1,11 +1,9 @@
 from sanic.views import HTTPMethodView
 from sanic import response
 
-from serializers import UserSerializer
-from models import User
-from settings import Session, JWT_KEY
+from settings import Session
 
-import jwt
+from user_auth import UserSerializer, authenticate, authorize
 
 
 class UserRegisterView(HTTPMethodView):
@@ -22,4 +20,13 @@ class UserRegisterView(HTTPMethodView):
 
 class UserLoginView(HTTPMethodView):
     def post(self, request):
-        return response.json({'token': ''})
+        email = request.json['email']
+        password = request.json['password']
+
+        user = authenticate(email, password)
+
+        if user is None:
+            return response.empty(status=404)
+
+        token = authorize(user).decode()
+        return response.json({'token': token})

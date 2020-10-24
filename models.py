@@ -1,7 +1,7 @@
 from settings import BaseModel
 from sqlalchemy import Column, Integer, String
 
-import hashlib
+import user_auth
 
 
 class User(BaseModel):
@@ -13,8 +13,4 @@ class User(BaseModel):
 
     def __init__(self, email, password):
         self.email = email
-        self.password_hash = User.make_password(password)
-
-    @staticmethod
-    def make_password(raw_password):
-        return hashlib.sha256(raw_password.encode()).hexdigest()
+        self.password_hash = user_auth.make_password(password)
