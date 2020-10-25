@@ -4,12 +4,17 @@ from sanic import response
 from settings import Session
 
 from user_auth import UserSerializer, authenticate, authorize
+from serializers import ValidationError
 
 
 class UserRegisterView(HTTPMethodView):
     def post(self, request):
         serializer = UserSerializer()
-        user = serializer.load(request.json)
+
+        try:
+            user = serializer.load(request.json)
+        except ValidationError:
+            return response.empty(status=404)
 
         session = Session()
         session.add(user)
@@ -24,7 +29,6 @@ class UserLoginView(HTTPMethodView):
         password = request.json['password']
 
         user = authenticate(email, password)
-
         if user is None:
             return response.empty(status=404)
 
