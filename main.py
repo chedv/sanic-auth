@@ -10,4 +10,4 @@ if __name__ == '__main__':
     for route in routes:
         app.add_route(route.view, route.url)
 
-    app.run(host=app_settings.host, port=app_settings.port, debug=app_settings.debug)
+    app.run(**app_settings)
