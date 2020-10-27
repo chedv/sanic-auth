@@ -1,7 +1,7 @@
-from settings import BaseModel
+from app.database import BaseModel
 from sqlalchemy import Column, Integer, String
 
-import user_auth
+from app import user_auth
 
 
 class User(BaseModel):

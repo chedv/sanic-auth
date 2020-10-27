@@ -1,10 +1,10 @@
 from sanic.views import HTTPMethodView
 from sanic import response
 
-from settings import Session
+from app.database import Session
 
-from user_auth import UserSerializer, authenticate, authorize
-from serializers import ValidationError
+from app.user_auth import authenticate, authorize
+from app.serializers import UserSerializer, ValidationError
 
 
 class UserRegisterView(HTTPMethodView):

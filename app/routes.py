@@ -1,4 +1,4 @@
-from views import UserRegisterView, UserLoginView
+from app.views import UserRegisterView, UserLoginView
 from collections import namedtuple
 
 

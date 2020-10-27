@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load, ValidationError
-from models import User
+from app import models
 
 
 class UserSerializer(Schema):
@@ -9,4 +9,4 @@ class UserSerializer(Schema):
 
     @post_load
     def make_user(self, data, **kwargs):
-        return User(**data)
+        return models.User(**data)

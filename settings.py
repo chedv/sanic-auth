@@ -1,7 +1,3 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
 from decouple import config
 
 
@@ -15,13 +11,4 @@ db_settings = dict(user=config('DB_USER'),
                    port=config('DB_PORT', default=5432, cast=int),
                    name=config('DB_NAME'))
 
-db_connection = ('postgresql+psycopg2://'
-                 '{user}:{password}@{host}:{port}/{name}').format(**db_settings)
-
-db_engine = create_engine(db_connection, echo=True)
-
-BaseModel = declarative_base()
-
-Session = sessionmaker(bind=db_engine)
-
-JWT_KEY = 'secret'
+jwt_key = config('JWT_KEY')
