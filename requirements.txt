@@ -13,6 +13,7 @@ multidict==4.7.6
 psycopg2==2.8.6
 PyJWT==1.7.1
 python-dateutil==2.8.1
+python-decouple==3.3
 python-editor==1.0.4
 rfc3986==1.4.0
 sanic==20.9.0

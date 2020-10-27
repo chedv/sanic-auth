@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  web:
+    image: chedv001/sanic-auth
+    command: python main.py
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  db:
+    image: postgres
+    env_file: database.conf
+    ports:
+      - "5434:5434"

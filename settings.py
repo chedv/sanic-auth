@@ -2,14 +2,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from decouple import config
 
-app_settings = dict(host='localhost', port=8000, debug=True)
 
-db_settings = dict(type='postgresql', driver='psycopg2',
-                   user='che', password='sanicauth',
-                   host='localhost', port=5432, name='userdb')
+app_settings = dict(host=config('APP_HOST', default='localhost'),
+                    port=config('APP_PORT', default=8000, cast=int),
+                    debug=config('APP_DEBUG', default=False, cast=bool))
 
-db_connection = '{type}+{driver}://{user}:{password}@{host}:{port}/{name}'.format(**db_settings)
+db_settings = dict(user=config('DB_USER'),
+                   password=config('DB_PASSWORD'),
+                   host=config('DB_HOST', default='localhost'),
+                   port=config('DB_PORT', default=5432, cast=int),
+                   name=config('DB_NAME'))
+
+db_connection = ('postgresql+psycopg2://'
+                 '{user}:{password}@{host}:{port}/{name}').format(**db_settings)
 
 db_engine = create_engine(db_connection, echo=True)
 
