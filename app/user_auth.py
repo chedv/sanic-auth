@@ -1,5 +1,6 @@
 from app import serializers
 from app import models
+from app import session
 from app.database import Session
 
 from settings import jwt_key
@@ -13,8 +14,8 @@ def make_password(raw_password):
 
 
 def authenticate(email, password):
-    session = Session()
-    user = session.query(models.User).filter_by(email=email).first()
+    query = session.create_query(Session)
+    user = query(models.User).filter_by(email=email).first()
 
     password_hash = make_password(password)
     if user.password_hash == password_hash:

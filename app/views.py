@@ -2,6 +2,7 @@ from sanic.views import HTTPMethodView
 from sanic import response
 
 from app.database import Session
+from app import session
 
 from app.user_auth import authenticate, authorize
 from app.serializers import UserSerializer, ValidationError
@@ -16,10 +17,7 @@ class UserRegisterView(HTTPMethodView):
         except ValidationError:
             return response.empty(status=404)
 
-        session = Session()
-        session.add(user)
-        session.commit()
-
+        session.add_entry(Session, entry=user)
         return response.empty(status=201)
 
 
