@@ -1,7 +1,6 @@
 from app import serializers
 from app import models
-from app import session
-from app.database import Session
+from app.user_session import create_session
 
 from settings import jwt_key
 import jwt
@@ -14,16 +13,29 @@ def make_password(raw_password):
 
 
 def authenticate(email, password):
-    query = session.create_query(Session)
-    user = query(models.User).filter_by(email=email).first()
+    query = models.User.query()
+    user = query.filter_by(email=email).first()
+    query.session.close()
 
     password_hash = make_password(password)
-    if user.password_hash == password_hash:
-        return user
-    return None
+    if user is None or user.password_hash != password_hash:
+        return None
+    return user
 
 
 def authorize(user):
     serializer = serializers.UserSerializer()
-    json = serializer.dump(user)
-    return jwt.encode(payload=json, key=jwt_key)
+    data = serializer.dump(user)
+
+    create_session(user)
+    return jwt.encode(payload=data, key=jwt_key)
+
+
+def decode_token(token):
+    data = jwt.decode(jwt=token, key=jwt_key)
+
+    query = models.User.query()
+    user = query.filter_by(**data).first()
+    query.session.close()
+
+    return user

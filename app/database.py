@@ -10,6 +10,10 @@ db_connection = ('postgresql+psycopg2://'
 
 db_engine = create_engine(db_connection, echo=True)
 
-BaseModel = declarative_base()
+Base = declarative_base()
 
-Session = sessionmaker(bind=db_engine)
+DBSession = sessionmaker(bind=db_engine)
+
+
+def session_factory():
+    return DBSession()

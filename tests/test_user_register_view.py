@@ -7,7 +7,9 @@ import json
 
 @pytest.fixture()
 def prepared_data():
-    return dict(email='ivan.ivanov911@example.com', password='Qwerty123')
+    return dict(email='ivan.ivanov911@example.com',
+                username='ivan.ivanov911',
+                password='Qwerty123')
 
 
 def test_post_created_status(prepared_db, prepared_data):
