@@ -1,4 +1,4 @@
-from app.database import Base, session_factory
+from app.database import Base, DBSession
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -8,19 +8,19 @@ from app import user_auth
 class BaseModel:
     @staticmethod
     def add(instance):
-        session = session_factory()
+        session = DBSession()
         session.add(instance)
         session.commit()
 
     @staticmethod
     def delete(instance):
-        session = session_factory()
+        session = DBSession()
         session.delete(instance)
         session.commit()
 
     @classmethod
     def query(cls):
-        return session_factory().query(cls)
+        return DBSession().query(cls)
 
 
 class User(Base, BaseModel):

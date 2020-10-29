@@ -13,7 +13,3 @@ db_engine = create_engine(db_connection, echo=True)
 Base = declarative_base()
 
 DBSession = sessionmaker(bind=db_engine)
-
-
-def session_factory():
-    return DBSession()
