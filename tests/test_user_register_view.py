@@ -33,4 +33,4 @@ def test_invalid_email(prepared_data):
         data = json.dumps(prepared_data)
 
         request, response = app.test_client.post('/register', data=data)
-        assert response.status == 404
+        assert response.status == 400
