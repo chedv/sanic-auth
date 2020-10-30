@@ -1,8 +1,9 @@
 from app import serializers
 from app import models
-from app.user_session import create_session
+from app import user_session
 
 from settings import jwt_key
+from jwt import PyJWTError
 import jwt
 
 import hashlib
@@ -27,12 +28,15 @@ def authorize(user):
     serializer = serializers.UserSerializer()
     data = serializer.dump(user)
 
-    create_session(user)
+    user_session.create_session(user)
     return jwt.encode(payload=data, key=jwt_key)
 
 
 def decode_token(token):
-    data = jwt.decode(jwt=token, key=jwt_key)
+    try:
+        data = jwt.decode(jwt=token, key=jwt_key)
+    except PyJWTError:
+        return None
 
     query = models.User.query()
     user = query.filter_by(**data).first()

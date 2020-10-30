@@ -29,3 +29,13 @@ def test_invalid_password(prepared_register):
     assert response.status == 404
 
     drop_db()
+
+
+def test_invalid_email(prepared_register):
+    prepared_register['email'] = 'ivan.ivanov912@example.com'
+    data = json.dumps(prepared_register)
+
+    request, response = app.test_client.post('/login', data=data)
+    assert response.status == 404
+
+    drop_db()

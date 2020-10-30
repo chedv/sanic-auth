@@ -6,7 +6,7 @@ def jwt_authentication_middleware(request):
     user = None
     if request.token is not None:
         reviewed_user = decode_token(request.token)
-        if get_session(reviewed_user) is not None:
+        if reviewed_user is not None and get_session(reviewed_user) is not None:
             user = reviewed_user
 
     request.args['user'] = user

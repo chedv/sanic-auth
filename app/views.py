@@ -1,6 +1,7 @@
 from sanic.views import HTTPMethodView
 from sanic import response
 
+from app.decorators import login_required
 from app.serializers import UserSerializer, ValidationError
 from app.user_auth import authenticate, authorize
 from app.user_session import delete_session
@@ -34,10 +35,8 @@ class UserLoginView(HTTPMethodView):
 
 
 class UserLogoutView(HTTPMethodView):
+    @login_required
     def post(self, request):
         user = request.args['user']
-        if user is None:
-            return response.empty(status=400)
-
         delete_session(user)
         return response.empty(status=200)

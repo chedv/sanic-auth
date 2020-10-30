@@ -19,17 +19,20 @@ def test_post_created_status(prepared_db, prepared_data):
     drop_db()
 
 
-def test_not_allowed_methods():
-    methods = ('get', 'put', 'delete', 'patch', 'options', 'head')
-    for method in methods:
-        request, response = getattr(app.test_client, method)('/register')
-        assert response.status == 405
-
-
 def test_invalid_email(prepared_data):
     invalid_emails = ('ivan.ivanov911', 'ivan.ivanov911@', '@example.com')
     for email in invalid_emails:
         prepared_data['email'] = email
+        data = json.dumps(prepared_data)
+
+        request, response = app.test_client.post('/register', data=data)
+        assert response.status == 400
+
+
+def test_invalid_username(prepared_data):
+    invalid_usernames = ('iv', 'iv$', 'iva@', 'ivanivanivanivanivani')
+    for username in invalid_usernames:
+        prepared_data['username'] = username
         data = json.dumps(prepared_data)
 
         request, response = app.test_client.post('/register', data=data)
