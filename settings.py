@@ -11,4 +11,4 @@ db_settings = dict(user=config('DB_USER'),
                    port=config('DB_PORT', default=5432, cast=int),
                    name=config('DB_NAME'))
 
-jwt_key = config('JWT_KEY')
+jwt_key = config('JWT_KEY', default='secret')
