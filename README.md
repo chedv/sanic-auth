@@ -45,7 +45,7 @@ DB_NAME=<db_name>
 JWT_KEY=<jwt secret key>
 ```
 
-After that you should apply migrations by using liquibase, so you need to install it. After installing you should create liquibase.properties file in migrations folder:
+After that you should apply migrations by using ``liquibase``, so you need to install it and ``PostgreSQL JDBC Driver``. After installing you should create ``liquibase.properties`` file in migrations folder:
 
 ```.env
 driver=org.postgresql.Driver
