@@ -6,14 +6,14 @@ Example authentication project based on Sanic
 
 Clone project:
 
-```shell script
+```shell
 git clone https://github.com/chedv/sanic-auth.git
 cd sanic-auth
 ```
 
 Create virtual environment and install dependencies:
 
-```shell script
+```shell
 python3.8 -m venv <venv name>
 python3.8 -m pip install -r requirements.txt
 ```
@@ -21,15 +21,13 @@ python3.8 -m pip install -r requirements.txt
 For database configuration, you should add .env file:
 
 ```.env
-
 # Database variables
 DB_USER=<db_user>
 DB_PASSWORD=<db_password>
 DB_NAME=<db_name>
-
 ```
 
-Also you can change default configuration variables:
+Also you can change other configuration variables, here is an example of the file with all variables:
 
 ```.env
 # Application variables
@@ -47,14 +45,30 @@ DB_NAME=<db_name>
 JWT_KEY=<jwt secret key>
 ```
 
-Run project:
+After that you should apply migrations by using liquibase, so you need to install it. After installing you should create liquibase.properties file in migrations folder:
 
-```shell script
+```.env
+driver=org.postgresql.Driver
+url=jdbc:postgresql://localhost:5432/<db_name>
+username=<db_user>
+password=<db_password>
+```
+
+Applying migrations are executed by following commands:
+
+```shell
+liquibase --changeLogFile=users_changelog.sql update
+liquibase --changeLogFile=sessions_changelog.sql update
+```
+
+Finally, you can run project:
+
+```shell
 python3.8 main.py
 ```
 
-Run tests:
+Also you can run tests:
 
-```shell script
+```shell
 python3.8 -m pytest
 ```

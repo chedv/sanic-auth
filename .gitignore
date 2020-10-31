@@ -154,3 +154,6 @@ fabric.properties
 
 # Configurations
 *.conf
+
+# Migration properties
+migrations/liquibase.properties
