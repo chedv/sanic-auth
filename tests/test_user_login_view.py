@@ -22,7 +22,7 @@ def test_post_status_200(prepared_register):
 
 
 def test_invalid_password(prepared_register):
-    prepared_register['password'] = 'Qwerty1234'
+    prepared_register['password'] = 'Qwerty123@'
     data = json.dumps(prepared_register)
 
     request, response = app.test_client.post('/login', data=data)
