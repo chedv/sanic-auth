@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset create.users:1
+--changeset chedv:create-users
 CREATE TABLE users (
     id SERIAL NOT NULL,
     email VARCHAR NOT NULL,
@@ -10,3 +10,5 @@ CREATE TABLE users (
     UNIQUE (email),
     UNIQUE (username)
 );
+
+--rollback DROP TABLE users;
