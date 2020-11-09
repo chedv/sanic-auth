@@ -6,7 +6,7 @@ from settings import db_settings
 
 
 db_connection = ('postgresql+psycopg2://'
-                 '{user}:{password}@{host}:{port}/{name}').format(**db_settings)
+                 '{user}:{password}@{host}:{port}/{database}').format(**db_settings)
 
 db_engine = create_engine(db_connection, echo=True)
 

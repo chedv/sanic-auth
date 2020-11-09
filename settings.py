@@ -9,6 +9,6 @@ db_settings = dict(user=config('DB_USER'),
                    password=config('DB_PASSWORD'),
                    host=config('DB_HOST', default='localhost'),
                    port=config('DB_PORT', default=5432, cast=int),
-                   name=config('DB_NAME'))
+                   database=config('DB_NAME'))
 
 jwt_key = config('JWT_KEY', default='secret')
