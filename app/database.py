@@ -1,15 +1,29 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
-from settings import db_settings
+from aiopg.sa import create_engine
 
 
-db_connection = ('postgresql+psycopg2://'
-                 '{user}:{password}@{host}:{port}/{database}').format(**db_settings)
+class Session:
+    def __init__(self, engine, connection):
+        self.engine = engine
+        self.connection = connection
 
-db_engine = create_engine(db_connection, echo=True)
+    async def execute(self, expression):
+        return await self.connection.execute(expression)
 
-Base = declarative_base()
+    async def close(self):
+        await self.connection.close()
+        self.engine.close()
 
-DBSession = sessionmaker(bind=db_engine)
+
+class SessionFabric:
+    db_config = None
+
+    @classmethod
+    def bind(cls, config):
+        cls.db_config = config
+
+    @classmethod
+    async def create(cls):
+        engine = await create_engine(**cls.db_config)
+        connection = await engine.acquire()
+
+        return Session(engine, connection)

@@ -1,9 +1,8 @@
-from marshmallow import Schema, fields, post_load, validate, ValidationError
+from marshmallow import Schema, fields, validate, ValidationError
 from app.validators import validate_password
-from app import models
 
 
-class UserSerializer(Schema):
+class UserForm(Schema):
     id = fields.Integer()
     email = fields.Email(required=True)
     username = fields.String(required=True,
@@ -12,7 +11,3 @@ class UserSerializer(Schema):
     password = fields.String(required=True,
                              validate=[validate_password,
                                        validate.Length(min=8)])
-
-    @post_load
-    def make_user(self, data, **kwargs):
-        return models.User(**data)
