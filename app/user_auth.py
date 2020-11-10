@@ -9,6 +9,10 @@ import jwt
 import hashlib
 
 
+def register(user):
+    models.User.add(user)
+
+
 def make_password(raw_password):
     return hashlib.sha256(raw_password.encode()).hexdigest()
 
@@ -30,6 +34,10 @@ def authorize(user):
 
     user_session.create_session(user)
     return jwt.encode(payload=data, key=jwt_key)
+
+
+def deauthorize(user):
+    user_session.delete_session(user)
 
 
 def decode_token(token):

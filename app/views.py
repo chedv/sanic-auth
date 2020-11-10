@@ -1,11 +1,9 @@
 from sanic.views import HTTPMethodView
 from sanic import response
 
-from app.decorators import login_required
 from app.serializers import UserSerializer, ValidationError
-from app.user_auth import authenticate, authorize
-from app.user_session import delete_session
-from app import models
+from app.user_auth import register, authenticate, authorize, deauthorize
+from app.decorators import login_required
 
 
 class UserRegisterView(HTTPMethodView):
@@ -17,7 +15,7 @@ class UserRegisterView(HTTPMethodView):
         except ValidationError as error:
             return response.json(error.messages, status=400)
 
-        models.User.add(user)
+        register(user)
         return response.empty(status=201)
 
 
@@ -38,5 +36,5 @@ class UserLogoutView(HTTPMethodView):
     @login_required
     def post(self, request):
         user = request.args['user']
-        delete_session(user)
+        deauthorize(user)
         return response.empty(status=200)
