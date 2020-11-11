@@ -1,6 +1,6 @@
 from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey
 
-from app.database import SessionFabric
+from app.database import Session, SessionFabric
 from settings import db_settings
 
 
@@ -30,25 +30,16 @@ class ExtendedTable(Table):
     async def execute(expression):
         session = await SessionFabric.create()
         await session.execute(expression)
-        await session.close()
 
     @staticmethod
     async def execute_fetchone(expression):
         session = await SessionFabric.create()
-        result = await session.execute(expression)
-        row = await result.fetchone()
-        await session.close()
-
-        return row
+        return await session.execute(expression, Session.fetch_one)
 
     @staticmethod
     async def execute_fetchall(expression):
         session = await SessionFabric.create()
-        result = await session.execute(expression)
-        rows = await result.fetchall()
-        await session.close()
-
-        return rows
+        return await session.execute(expression, Session.fetch_all)
 
 
 UserTable = ExtendedTable('users', metadata,

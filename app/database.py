@@ -1,17 +1,21 @@
 from aiopg.sa import create_engine
+from aiopg.sa.result import ResultProxy
 
 
 class Session:
-    def __init__(self, engine, connection):
-        self.engine = engine
-        self.connection = connection
+    fetch_one = ResultProxy.fetchone
+    fetch_all = ResultProxy.fetchall
+    fetch_many = ResultProxy.fetchmany
 
-    async def execute(self, expression):
-        return await self.connection.execute(expression)
+    def __init__(self, db_config):
+        self.db_config = db_config
 
-    async def close(self):
-        await self.connection.close()
-        self.engine.close()
+    async def execute(self, expression, fetch_method=None, **kwargs):
+        async with create_engine(**self.db_config) as engine:
+            async with engine.acquire() as connection:
+                result = await connection.execute(expression)
+                if fetch_method:
+                    return await fetch_method(result, **kwargs)
 
 
 class SessionFabric:
@@ -23,7 +27,4 @@ class SessionFabric:
 
     @classmethod
     async def create(cls):
-        engine = await create_engine(**cls.db_config)
-        connection = await engine.acquire()
-
-        return Session(engine, connection)
+        return Session(cls.db_config)

@@ -50,4 +50,3 @@ async def decode_token(token):
 
     row = await UserTable.get_row(UserTable.c.email, data['email'])
     return row if row else None
-
