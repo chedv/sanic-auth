@@ -1,47 +1,23 @@
-from app.database import Base, DBSession
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
-
+from app.database import db
 from app import user_auth
 
 
-class BaseModel:
-    @staticmethod
-    def add(instance):
-        session = DBSession()
-        session.add(instance)
-        session.commit()
-
-    @staticmethod
-    def delete(instance):
-        session = DBSession()
-        session.delete(instance)
-        session.commit()
-
-    @classmethod
-    def query(cls):
-        return DBSession().query(cls)
-
-
-class User(Base, BaseModel):
+class User(db.Model):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False, unique=True)
-    username = Column(String, nullable=False, unique=True)
-    password_hash = Column(String(64), nullable=False)
-
-    session = relationship('Session', back_populates='user', uselist=False)
-
-    def __init__(self, email, username, password):
-        self.email = email
-        self.username = username
-        self.password_hash = user_auth.make_password(password)
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String, nullable=False, unique=True)
+    username = db.Column(db.String, nullable=False, unique=True)
+    password_hash = db.Column(db.String(64), nullable=False)
 
 
-class Session(Base, BaseModel):
+def create_user(email, username, password):
+    password_hash = user_auth.make_password(password)
+    return User(email=email, username=username, password_hash=password_hash)
+
+
+class Session(db.Model):
     __tablename__ = 'sessions'
 
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    user = relationship('User', back_populates='session')
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(None, db.ForeignKey('users.id'))

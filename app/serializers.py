@@ -15,4 +15,4 @@ class UserSerializer(Schema):
 
     @post_load
     def make_user(self, data, **kwargs):
-        return models.User(**data)
+        return models.create_user(**data)

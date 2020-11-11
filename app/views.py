@@ -7,7 +7,7 @@ from app.decorators import login_required
 
 
 class UserRegisterView(HTTPMethodView):
-    def post(self, request):
+    async def post(self, request):
         serializer = UserSerializer()
 
         try:
@@ -15,26 +15,26 @@ class UserRegisterView(HTTPMethodView):
         except ValidationError as error:
             return response.json(error.messages, status=400)
 
-        register(user)
+        await register(user)
         return response.empty(status=201)
 
 
 class UserLoginView(HTTPMethodView):
-    def post(self, request):
+    async def post(self, request):
         email = request.json['email']
         password = request.json['password']
 
-        user = authenticate(email, password)
+        user = await authenticate(email, password)
         if user is None:
             return response.empty(status=404)
 
-        token = authorize(user).decode()
-        return response.json({'token': token})
+        token = await authorize(user)
+        return response.json({'token': token.decode()})
 
 
 class UserLogoutView(HTTPMethodView):
     @login_required
-    def post(self, request):
+    async def post(self, request):
         user = request.args['user']
-        deauthorize(user)
+        await deauthorize(user)
         return response.empty(status=200)

@@ -1,15 +1,16 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from gino.ext.sanic import Gino
 
 from settings import db_settings
 
 
-db_connection = ('postgresql+psycopg2://'
-                 '{user}:{password}@{host}:{port}/{database}').format(**db_settings)
+db = Gino()
 
-db_engine = create_engine(db_connection, echo=True)
 
-Base = declarative_base()
+def db_connection(app):
+    app.config.DB_USER = db_settings['user']
+    app.config.DB_PASSWORD = db_settings['password']
+    app.config.DB_HOST = db_settings['host']
+    app.config.DB_PORT = db_settings['port']
+    app.config.DB_DATABASE = db_settings['database']
 
-DBSession = sessionmaker(bind=db_engine)
+    db.init_app(app)

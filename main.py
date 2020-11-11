@@ -1,6 +1,7 @@
 from sanic import Sanic
 from app.routes import routes
 from app.middlewares import middlewares
+from app.database import db_connection
 from settings import app_settings
 
 app = Sanic(__name__)
@@ -13,4 +14,5 @@ for middleware in middlewares:
 
 
 if __name__ == '__main__':
+    db_connection(app)
     app.run(**app_settings)
