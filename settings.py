@@ -11,4 +11,8 @@ db_settings = dict(user=config('DB_USER'),
                    port=config('DB_PORT', default=5432, cast=int),
                    database=config('DB_NAME'))
 
+kafka_settings = dict(host=config('KAFKA_HOST', default='localhost'),
+                      port=config('KAFKA_PORT', default=9092),
+                      fetch=config('KAFKA_FETCH', default=5))
+
 jwt_key = config('JWT_KEY', default='secret')
