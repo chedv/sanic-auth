@@ -1,8 +1,9 @@
 __pycache__/
-.pytest_cache
+.pytest_cache/
 .cache
 .env
 venv/
 .idea/
 *.conf
+migrations/classpath/
 migrations/liquibase.properties
