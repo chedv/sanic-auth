@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        logicalFilePath="changelog.xml"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="changesets/0000_createUsersTable.xml" relativeToChangelogFile="true"/>
+    <changeSet author="chedv" id="version_bump_1.0.0">
+        <tagDatabase tag="version_1.0.0"/>
+    </changeSet>
+
+    <include file="changesets/0001_createSessionsTable.xml" relativeToChangelogFile="true"/>
+    <changeSet author="chedv" id="version_bump_1.0.1">
+        <tagDatabase tag="version_1.0.1"/>
+    </changeSet>
+
+</databaseChangeLog>
