@@ -52,13 +52,13 @@ driver=org.postgresql.Driver
 url=jdbc:postgresql://localhost:5432/<db_name>
 username=<db_user>
 password=<db_password>
+changeLogFile=changelog.xml
 ```
 
-Applying migrations are executed by following commands:
+Applying migrations are executed by following command:
 
 ```shell
-liquibase --changeLogFile=users_changelog.sql update
-liquibase --changeLogFile=sessions_changelog.sql update
+liquibase update
 ```
 
 Finally, you can run project:
@@ -71,4 +71,37 @@ Also you can run tests:
 
 ```shell
 python3.8 -m pytest
+```
+
+# Deployment in Docker
+
+For making deployment you should complete the following steps:
+
+1. Make changes in .env file:
+
+```shell
+APP_HOST=web
+DB_HOST=db
+```
+
+2. Create database configuration file ``database.conf``:
+
+```shell
+POSTGRES_USER=<db_user>
+POSTGRES_PASSWORD=<db_password>
+POSTGRES_DB=<db_name>
+```
+
+3. Add ``PostgreSQL JDBC Driver`` .jar file with specified name and path ``migrations/classpath/postgresql.jar``. 
+
+Build image:
+
+```shell
+docker build -t chedv001/sanic-auth .
+```
+
+Run docker-compose:
+
+```shell
+docker-compose up
 ```
