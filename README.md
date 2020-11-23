@@ -94,13 +94,13 @@ POSTGRES_DB=<db_name>
 
 3. Add ``PostgreSQL JDBC Driver`` .jar file with specified name and path ``migrations/classpath/postgresql.jar``. 
 
-Build image:
+4. Build image:
 
 ```shell
 docker build -t chedv001/sanic-auth .
 ```
 
-Run docker-compose:
+5. Run docker-compose:
 
 ```shell
 docker-compose up
