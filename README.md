@@ -94,13 +94,19 @@ POSTGRES_DB=<db_name>
 
 3. Add ``PostgreSQL JDBC Driver`` .jar file with specified name and path ``migrations/classpath/postgresql.jar``. 
 
-4. Build image:
+4. Create docker volume for persisting postgresql data:
+
+```shell
+docker volume create pg_data
+```
+
+5. Build image:
 
 ```shell
 docker build -t chedv001/sanic-auth .
 ```
 
-5. Run docker-compose:
+6. Run docker-compose:
 
 ```shell
 docker-compose up
