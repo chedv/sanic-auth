@@ -73,6 +73,16 @@ Also you can run tests:
 python3.8 -m pytest
 ```
 
+Pytest coverage tool:
+
+```shell
+python3.8 -m pytest --cov=app tests/
+```
+
+Here is the result of working:
+
+![coverage](https://user-images.githubusercontent.com/58002732/106276447-45002b00-6240-11eb-9d47-bafac30f0745.png)
+
 # Deployment in Docker
 
 For making deployment you should complete the following steps:
